@@ -8,14 +8,14 @@ import intern
 
 app = FastAPI()
 
-@app.post("/api/add_intern_record")
-async def add_intern_record(body: intern.AddInternRecordBody) -> bool:
-    return intern.add_intern_record(body)
+@app.post("/api/add_intern")
+async def add_intern(body: intern.RequestAddIntern) -> bool:
+    return intern.add_intern(body)
 
-@app.post("/api/remove_intern_record")
-async def remove_intern_record(body: intern.RemoveInternRecordBody) -> bool:
-    return intern.remove_intern_record(body)
+@app.post("/api/remove_intern")
+async def remove_intern(body: intern.RequestRemoveIntern) -> bool:
+    return intern.remove_intern(body)
 
-@app.post("/api/get_intern_records")
-async def get_intern_records(body: intern.GetInternRecordsFilterBody) -> list[intern.GetInternsResponse]:
-    return intern.get_intern_records(body)
+@app.post("/api/get_intern")
+async def get_intern(body: intern.RequestGetInterns) -> list[intern.ResponseGetInterns]:
+    return intern.get_intern(body)

@@ -22,7 +22,7 @@ def connect_to_db():
 # Enumeration of allowed values of intern
 # This is as described by the instructions
 # Prefer to put this into enum to auto-generate docs
-class InternRecordStatus(str, Enum):
+class InternStatus(str, Enum):
     NEW  = "New"
     WIP  = "WIP"
     WAIT = "Wait"
@@ -30,13 +30,13 @@ class InternRecordStatus(str, Enum):
     FAIL = "Fail"
     HIRE = "Hire"
 
-class AddInternRecordBody(BaseModel):
+class RequestAddIntern(BaseModel):
     name:           str     = "John Doe"
     applied_date:   date    = date(2024, 1, 1)
     role:           str     = "Web Application Trainee"
-    status:         InternRecordStatus = InternRecordStatus.NEW
+    status:         InternStatus = InternStatus.NEW
 
-def add_intern_record(body: AddInternRecordBody) -> bool:
+def add_intern(body: RequestAddIntern) -> bool:
         
     mydb = connect_to_db()
     mycursor = mydb.cursor()
@@ -50,10 +50,10 @@ def add_intern_record(body: AddInternRecordBody) -> bool:
 
     return True
 
-class RemoveInternRecordBody(BaseModel):
+class RequestRemoveIntern(BaseModel):
     id: int
 
-def remove_intern_record(body: RemoveInternRecordBody) -> bool:
+def remove_intern(body: RequestRemoveIntern) -> bool:
         
     mydb = connect_to_db()
     mycursor = mydb.cursor()
@@ -66,17 +66,17 @@ def remove_intern_record(body: RemoveInternRecordBody) -> bool:
     return True
 
 
-class GetInternRecordsFilterBody(BaseModel):
+class RequestGetInterns(BaseModel):
     ...
 
-class GetInternsResponse(BaseModel):
+class ResponseGetInterns(BaseModel):
     id:             int
     name:           str
     applied_date:   date
     role:           str
-    status:         InternRecordStatus
+    status:         InternStatus
 
-def get_intern_records(body: GetInternRecordsFilterBody) -> list[GetInternsResponse]:
+def get_intern(body: RequestGetInterns) -> list[ResponseGetInterns]:
         
     mydb = connect_to_db()
     mycursor = mydb.cursor()
@@ -85,10 +85,10 @@ def get_intern_records(body: GetInternRecordsFilterBody) -> list[GetInternsRespo
             `id`, `name`, `applied_date`, `role`, `status` 
         FROM interns
     """)
-    result: list[GetInternsResponse] = []
+    result: list[ResponseGetInterns] = []
     for i in mycursor.fetchall():
-        resp = GetInternsResponse(**{
-            k: v for k, v in zip( GetInternsResponse.model_fields.keys(), i )
+        resp = ResponseGetInterns(**{
+            k: v for k, v in zip( ResponseGetInterns.model_fields.keys(), i )
         })
         result.append(resp)
     mycursor.close()
