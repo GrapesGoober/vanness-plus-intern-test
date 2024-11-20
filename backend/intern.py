@@ -64,3 +64,33 @@ def remove_intern_record(body: RemoveInternRecordBody) -> bool:
     mydb.commit()
 
     return True
+
+
+class GetInternRecordsFilterBody(BaseModel):
+    ...
+
+class GetInternsResponse(BaseModel):
+    id:             int
+    name:           str
+    applied_date:   date
+    role:           str
+    status:         InternRecordStatus
+
+def get_intern_records(body: GetInternRecordsFilterBody) -> list[GetInternsResponse]:
+        
+    mydb = connect_to_db()
+    mycursor = mydb.cursor()
+    mycursor.execute("""
+        SELECT 
+            `id`, `name`, `applied_date`, `role`, `status` 
+        FROM interns
+    """)
+    result: list[GetInternsResponse] = []
+    for i in mycursor.fetchall():
+        resp = GetInternsResponse(**{
+            k: v for k, v in zip( GetInternsResponse.model_fields.keys(), i )
+        })
+        result.append(resp)
+    mycursor.close()
+
+    return result
