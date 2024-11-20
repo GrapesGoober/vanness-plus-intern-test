@@ -44,8 +44,8 @@ def add_intern_record(body: AddInternRecordBody) -> bool:
     mycursor.execute("""
         INSERT INTO `interns` 
         (`name`, `applied_date`, `role`, `status`) 
-        VALUES ("John", "2024-1-1", "Web Dev", "New");
-    """)
+        VALUES (%(name)s, %(applied_date)s, %(role)s, %(status)s);
+    """, body.model_dump())
     mycursor.close()
     mydb.commit()
 
