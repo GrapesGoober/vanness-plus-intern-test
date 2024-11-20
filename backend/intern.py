@@ -30,7 +30,6 @@ class InternRecordStatus(str, Enum):
     FAIL = "Fail"
     HIRE = "Hire"
 
-# The request body definition to add a new intern record
 class AddInternRecordBody(BaseModel):
     name:           str     = "John Doe"
     applied_date:   date    = date(2024, 1, 1)
@@ -45,6 +44,21 @@ def add_intern_record(body: AddInternRecordBody) -> bool:
         INSERT INTO `interns` 
         (`name`, `applied_date`, `role`, `status`) 
         VALUES (%(name)s, %(applied_date)s, %(role)s, %(status)s);
+    """, body.model_dump())
+    mycursor.close()
+    mydb.commit()
+
+    return True
+
+class RemoveInternRecordBody(BaseModel):
+    id: int
+
+def remove_intern_record(body: RemoveInternRecordBody) -> bool:
+        
+    mydb = connect_to_db()
+    mycursor = mydb.cursor()
+    mycursor.execute("""
+        DELETE FROM interns WHERE id = %(id)s
     """, body.model_dump())
     mycursor.close()
     mydb.commit()

@@ -11,3 +11,8 @@ app = FastAPI()
 @app.post("/api/add_intern_record")
 async def add_intern_record(body: intern.AddInternRecordBody):
     return intern.add_intern_record(body)
+
+
+@app.post("/api/remove_intern_record")
+async def remove_intern_record(body: intern.RemoveInternRecordBody):
+    return intern.remove_intern_record(body)
