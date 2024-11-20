@@ -30,13 +30,13 @@ class InternStatus(str, Enum):
     FAIL = "Fail"
     HIRE = "Hire"
 
-class RequestAddIntern(BaseModel):
+class InternBody(BaseModel):
     name:           str     = "John Doe"
     applied_date:   date    = date(2024, 1, 1)
     role:           str     = "Web Application Trainee"
     status:         InternStatus = InternStatus.NEW
 
-def add_intern(body: RequestAddIntern) -> bool:
+def add_intern(body: InternBody) -> bool:
         
     mydb = connect_to_db()
     mycursor = mydb.cursor()
@@ -50,33 +50,26 @@ def add_intern(body: RequestAddIntern) -> bool:
 
     return True
 
-class RequestRemoveIntern(BaseModel):
-    id: int
-
-def remove_intern(body: RequestRemoveIntern) -> bool:
+def remove_intern(id: int) -> bool:
         
     mydb = connect_to_db()
     mycursor = mydb.cursor()
     mycursor.execute("""
-        DELETE FROM interns WHERE id = %(id)s
-    """, body.model_dump())
+        DELETE FROM interns WHERE id = %s
+    """, id)
     mycursor.close()
     mydb.commit()
 
     return True
 
-
-class RequestGetInterns(BaseModel):
+class GetInternsFilter(BaseModel):
     ...
 
-class ResponseGetInterns(BaseModel):
-    id:             int
-    name:           str
-    applied_date:   date
-    role:           str
-    status:         InternStatus
+class GetInternItem(BaseModel):
+    id:     int
+    body:   InternBody
 
-def get_intern(body: RequestGetInterns) -> list[ResponseGetInterns]:
+def get_intern(filter: GetInternsFilter) -> list[GetInternItem]:
         
     mydb = connect_to_db()
     mycursor = mydb.cursor()
@@ -85,10 +78,10 @@ def get_intern(body: RequestGetInterns) -> list[ResponseGetInterns]:
             `id`, `name`, `applied_date`, `role`, `status` 
         FROM interns
     """)
-    result: list[ResponseGetInterns] = []
+    result: list[GetInternItem] = []
     for i in mycursor.fetchall():
-        resp = ResponseGetInterns(**{
-            k: v for k, v in zip( ResponseGetInterns.model_fields.keys(), i )
+        resp = GetInternItem(**{
+            k: v for k, v in zip( GetInternItem.model_fields.keys(), i )
         })
         result.append(resp)
     mycursor.close()
