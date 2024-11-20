@@ -1,0 +1,27 @@
+services:
+  my-fastapi-app:
+    build: 
+      context: ./backend  # Build the image from backend
+      args: 
+        - --no-cache=True
+    volumes:
+      - "./backend:/app"  # Mount current directory to /app in the container
+    ports:
+      - "8000:8000"  # Map container port 8000 to host port 8000
+    depends_on:
+      - mysql  # Wait for MySQL to start before running the FastAPI app
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: 'mysql'
+      # In this case, login with "root", password=""
+      MYSQL_ROOT_PASSWORD: ''
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ports:
+      - "3306:3306"
+    volumes:
+      - sqldata:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+  sqldata:
