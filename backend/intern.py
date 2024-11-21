@@ -3,27 +3,14 @@
 # intern.py contains business logic for managing intern list
 
 from enum import Enum
-from typing import Optional
 import mysql.connector
 from pydantic import BaseModel
 from datetime import date
 
-# I'd keep the db file next to the features they're servicing for
-# The idea is that each service might have different database requirements
-# Which means they'll have their own database connections
-def connect_to_db():
-    # FYI: these MySQL environment variables are defined in compose.yaml
-    return mysql.connector.connect(
-        host="mysql",
-        user="root",
-        password="",
-        database="interns_db"
-    )
-
-# Enumeration of allowed values of intern
-# This is as described by the instructions
-# Prefer to put this into enum to auto-generate docs
 class InternStatus(str, Enum):
+    """
+    Allowable values of application status of each interns.
+    """
     NEW  = "New"
     WIP  = "WIP"
     WAIT = "Wait"
@@ -41,15 +28,31 @@ class InternInfo(BaseModel):
     status:         InternStatus = InternStatus.NEW
 
 class InternInfoWithId(InternInfo):
+    """
+    Base model representing an intern with identifiable ID.
+    """
     id: int = 0
     
 class InternsFilter(BaseModel):
     """
-    Filter used by get_intern. The logic for filtering is defined in get_intern.
+    Filter used by `get_intern`. 
+    The logic for filtering is defined in `get_intern`.
     """
     applied_date: date = date(2024, 1, 1)
     status: InternStatus | None = None
     ...
+
+def connect_to_db() -> mysql.connector.MySQLConnection:
+    """
+    Returns mysql connection to `interns_db` as root user.
+    """
+    # FYI: these MySQL environment variables are defined in compose.yaml
+    return mysql.connector.connect(
+        host="mysql",
+        user="root",
+        password="",
+        database="interns_db"
+    )
 
 def add_intern(body: InternInfo) -> bool:
     """
@@ -93,7 +96,8 @@ def edit_intern(body: InternInfoWithId) -> bool:
 
 def remove_intern(id: int) -> bool:
     """
-    Removes intern based on ID. Returns True if success, regardless if intern exists or not
+    Removes an intern based on ID. 
+    Returns True if executed ok, regardless if intern exists or not
     """
     mydb = connect_to_db()
     mycursor = mydb.cursor()

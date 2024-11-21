@@ -1,5 +1,13 @@
+# Author: Nachat Kaewmeesang
+# This code is used for internship for Vanness Plus Consulting Co., Ltd
+# compose.yaml sets up 3 container services for the webapp
+# - mysql -> user='root' password='' port=3306
+# - fastapi-app -> port=8000; you can check docs via localhost:8000/docs
+# - svelte-app -> port=5173
+# Simply start your docker engine and run `docker compose up`
+
 services:
-  my-fastapi-app:
+  fastapi-app:
     build: 
       context: ./backend  # Build the image from backend
       args: 

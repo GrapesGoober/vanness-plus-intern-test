@@ -1,7 +1,7 @@
 
 # Author: Nachat Kaewmeesang
 # This code is used for internship for Vanness Plus Consulting Co., Ltd
-# main.py contains APIs for the app
+# main.py contains APIs for the app. The logic is defined in intern.py
 
 from typing import Annotated
 from fastapi import FastAPI, Query
