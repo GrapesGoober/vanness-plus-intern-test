@@ -13,11 +13,16 @@ services:
       args: 
         - --no-cache=True
     volumes:
-      - "./frontend/src:/app/src"  # Mount current directory to /app in the container
+      - ./frontend/src:/app/src
+      - ./frontend/static:/app/static
+      - ./frontend/vite.config.js:/app/vite.config.js
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - ./frontend/svelte.config.js:/app/svelte.config.js
     ports:
       - "5173:5173"  # Map container port 5173 (default Vite port)
     depends_on:
       - fastapi-app  # Wait for backend to start before running the FastAPI app
+    command: npm run dev -- --host 0.0.0.0 --port 5173
   fastapi-app:
     build: 
       context: ./backend  # Build the image from backend
