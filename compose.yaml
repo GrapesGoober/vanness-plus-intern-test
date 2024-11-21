@@ -7,6 +7,17 @@
 # Simply start your docker engine and run `docker compose up`
 
 services:
+  svelte-app:
+    build: 
+      context: ./frontend  # Build the image from frontend
+      args: 
+        - --no-cache=True
+    volumes:
+      - "./frontend/src:/app/src"  # Mount current directory to /app in the container
+    ports:
+      - "5173:5173"  # Map container port 5173 (default Vite port)
+    depends_on:
+      - fastapi-app  # Wait for backend to start before running the FastAPI app
   fastapi-app:
     build: 
       context: ./backend  # Build the image from backend
