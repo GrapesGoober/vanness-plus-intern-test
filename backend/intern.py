@@ -39,8 +39,10 @@ class InternsFilter(BaseModel):
     Filter used by `get_intern`. 
     The logic for filtering is defined in `get_intern`.
     """
-    applied_date:   date = date(2024, 1, 1)
-    status:         Optional[InternStatus]  = None
+    name_contains:  str = ""
+    applied_after:  date = date(2024, 1, 1)
+    applied_before: date = date(2024, 12, 1)
+    status:         Optional[InternStatus] = None
     ...
 
 def connect_to_db() -> mysql.connector.MySQLConnection:
@@ -125,7 +127,15 @@ def get_intern(filter: InternsFilter) -> list[InternInfoWithId]:
             `id`, `name`, `applied_date`, `role`, `status` 
         FROM 
             `interns`
-    """)
+        WHERE
+            `name` LIKE CONCAT('%', %(name_contains)s, '%')
+            AND
+            `applied_date` < %(applied_before)s 
+            AND
+            `applied_date` > %(applied_after)s;
+    """, filter.model_dump())
+    # `status` = %(status)s
+
     result: list[InternInfoWithId] = []
     for i in mycursor.fetchall():
         resp = InternInfoWithId(**i)
