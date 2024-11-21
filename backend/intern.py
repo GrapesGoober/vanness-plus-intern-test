@@ -102,8 +102,8 @@ def remove_intern(id: int) -> bool:
     mydb = connect_to_db()
     mycursor = mydb.cursor()
     mycursor.execute("""
-        DELETE FROM interns WHERE id = %s
-    """, id)
+        DELETE FROM interns WHERE id = %s;
+    """, (id,))
     mycursor.close()
     mydb.commit()
 
