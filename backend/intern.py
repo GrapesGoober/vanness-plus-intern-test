@@ -3,6 +3,7 @@
 # intern.py contains business logic for managing intern list
 
 from enum import Enum
+from typing import Optional
 import mysql.connector
 from pydantic import BaseModel
 from datetime import date
@@ -22,9 +23,9 @@ class InternInfo(BaseModel):
     """
     Base model representing an intern.
     """
-    name:           str     = "John Doe"
-    applied_date:   date    = date(2024, 1, 1)
-    role:           str     = "Web Application Trainee"
+    name:           str = "John Doe"
+    applied_date:   date = date(2024, 1, 1)
+    role:           str = "Web Application Trainee"
     status:         InternStatus = InternStatus.NEW
 
 class InternInfoWithId(InternInfo):
@@ -38,8 +39,8 @@ class InternsFilter(BaseModel):
     Filter used by `get_intern`. 
     The logic for filtering is defined in `get_intern`.
     """
-    applied_date: date = date(2024, 1, 1)
-    status: InternStatus | None = None
+    applied_date:   date = date(2024, 1, 1)
+    status:         Optional[InternStatus]  = None
     ...
 
 def connect_to_db() -> mysql.connector.MySQLConnection:
@@ -62,8 +63,9 @@ def add_intern(body: InternInfo) -> bool:
     mycursor = mydb.cursor()
     mycursor.execute("""
         INSERT INTO `interns` 
-        (`name`, `applied_date`, `role`, `status`) 
-        VALUES (%(name)s, %(applied_date)s, %(role)s, %(status)s);
+            (`name`, `applied_date`, `role`, `status`) 
+        VALUES 
+            (%(name)s, %(applied_date)s, %(role)s, %(status)s);
     """, body.model_dump())
     mycursor.close()
     mydb.commit()
@@ -83,11 +85,13 @@ def edit_intern(body: InternInfoWithId) -> bool:
     mycursor = mydb.cursor()
     mycursor.execute("""
         UPDATE `interns`
-        SET `name` = %(name)s,
-            `applied_date` = %(applied_date)s,
-            `role` = %(role)s,
-            `status` = %(status)s
-        WHERE `id` = %(id)s;
+        SET 
+            `name`          = %(name)s,
+            `applied_date`  = %(applied_date)s,
+            `role`          = %(role)s,
+            `status`        = %(status)s
+        WHERE 
+            `id`            = %(id)s;
     """, body.model_dump())
     mycursor.close()
     mydb.commit()
@@ -119,7 +123,8 @@ def get_intern(filter: InternsFilter) -> list[InternInfoWithId]:
     mycursor.execute("""
         SELECT 
             `id`, `name`, `applied_date`, `role`, `status` 
-        FROM interns
+        FROM 
+            `interns`
     """)
     result: list[InternInfoWithId] = []
     for i in mycursor.fetchall():
