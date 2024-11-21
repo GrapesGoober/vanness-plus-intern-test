@@ -10,7 +10,7 @@ import intern
 app = FastAPI()
 
 @app.put("/api/intern")
-async def edit_intern(body: intern.InternInfo) -> bool:
+async def edit_intern(body: intern.InternInfoWithId) -> bool:
     return intern.edit_intern(body)
 
 @app.post("/api/intern")
@@ -22,5 +22,5 @@ async def remove_intern(id: int) -> bool:
     return intern.remove_intern(id)
 
 @app.get("/api/intern")
-async def get_intern(filter: Annotated[intern.GetInternsFilter, Query()]) -> list[intern.InternInfo]:
+async def get_intern(filter: Annotated[intern.InternsFilter, Query()]) -> list[intern.InternInfoWithId]:
     return intern.get_intern(filter)

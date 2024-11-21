@@ -35,13 +35,15 @@ class InternInfo(BaseModel):
     """
     Base model representing an intern.
     """
-    id:             Optional[int]
     name:           str     = "John Doe"
     applied_date:   date    = date(2024, 1, 1)
     role:           str     = "Web Application Trainee"
     status:         InternStatus = InternStatus.NEW
+
+class InternInfoWithId(InternInfo):
+    id: int = 0
     
-class GetInternsFilter(BaseModel):
+class InternsFilter(BaseModel):
     """
     Filter used by get_intern. The logic for filtering is defined in get_intern.
     """
@@ -65,7 +67,7 @@ def add_intern(body: InternInfo) -> bool:
 
     return True
 
-def edit_intern(body: InternInfo) -> bool:
+def edit_intern(body: InternInfoWithId) -> bool:
     """
     Edits existing intern based on ID. Doesn't check whether intern exists.
     Returns `True` if success, regardless whether intern exists.
@@ -103,23 +105,21 @@ def remove_intern(id: int) -> bool:
 
     return True
 
-def get_intern(filter: GetInternsFilter) -> list[InternInfo]:
+def get_intern(filter: InternsFilter) -> list[InternInfoWithId]:
     """
     Get a list of InternInfo, with filter GetInternsFilter.
     """
         
     mydb = connect_to_db()
-    mycursor = mydb.cursor()
+    mycursor = mydb.cursor(dictionary=True)
     mycursor.execute("""
         SELECT 
             `id`, `name`, `applied_date`, `role`, `status` 
         FROM interns
     """)
-    result: list[InternInfo] = []
+    result: list[InternInfoWithId] = []
     for i in mycursor.fetchall():
-        resp = InternInfo(**{
-            k: v for k, v in zip( InternInfo.model_fields.keys(), i )
-        })
+        resp = InternInfoWithId(**i)
         result.append(resp)
     mycursor.close()
 
