@@ -3,6 +3,7 @@
 # intern.py contains business logic for managing intern list
 
 from enum import Enum
+from typing import Optional
 import mysql.connector
 from pydantic import BaseModel
 from datetime import date
@@ -30,14 +31,28 @@ class InternStatus(str, Enum):
     FAIL = "Fail"
     HIRE = "Hire"
 
-class InternBody(BaseModel):
+class InternInfo(BaseModel):
+    """
+    Base model representing an intern.
+    """
+    id:             Optional[int]
     name:           str     = "John Doe"
     applied_date:   date    = date(2024, 1, 1)
     role:           str     = "Web Application Trainee"
     status:         InternStatus = InternStatus.NEW
+    
+class GetInternsFilter(BaseModel):
+    """
+    Filter used by get_intern. The logic for filtering is defined in get_intern.
+    """
+    applied_date: date = date(2024, 1, 1)
+    status: InternStatus | None = None
+    ...
 
-def add_intern(body: InternBody) -> bool:
-        
+def add_intern(body: InternInfo) -> bool:
+    """
+    Add a new intern. Ignores the `id` attribute. Returns `True` if success.
+    """
     mydb = connect_to_db()
     mycursor = mydb.cursor()
     mycursor.execute("""
@@ -50,8 +65,34 @@ def add_intern(body: InternBody) -> bool:
 
     return True
 
+def edit_intern(body: InternInfo) -> bool:
+    """
+    Edits existing intern based on ID. Doesn't check whether intern exists.
+    Returns `True` if success, regardless whether intern exists.
+    Returns `False` if ID field not specified.
+    """
+    if body.id == None:
+        return False
+
+    mydb = connect_to_db()
+    mycursor = mydb.cursor()
+    mycursor.execute("""
+        UPDATE `interns`
+        SET `name` = %(name)s,
+            `applied_date` = %(applied_date)s,
+            `role` = %(role)s,
+            `status` = %(status)s
+        WHERE `id` = %(id)s;
+    """, body.model_dump())
+    mycursor.close()
+    mydb.commit()
+
+    return True
+
 def remove_intern(id: int) -> bool:
-        
+    """
+    Removes intern based on ID. Returns True if success, regardless if intern exists or not
+    """
     mydb = connect_to_db()
     mycursor = mydb.cursor()
     mycursor.execute("""
@@ -62,14 +103,10 @@ def remove_intern(id: int) -> bool:
 
     return True
 
-class GetInternsFilter(BaseModel):
-    ...
-
-class GetInternItem(BaseModel):
-    id:     int
-    body:   InternBody
-
-def get_intern(filter: GetInternsFilter) -> list[GetInternItem]:
+def get_intern(filter: GetInternsFilter) -> list[InternInfo]:
+    """
+    Get a list of InternInfo, with filter GetInternsFilter.
+    """
         
     mydb = connect_to_db()
     mycursor = mydb.cursor()
@@ -78,10 +115,10 @@ def get_intern(filter: GetInternsFilter) -> list[GetInternItem]:
             `id`, `name`, `applied_date`, `role`, `status` 
         FROM interns
     """)
-    result: list[GetInternItem] = []
+    result: list[InternInfo] = []
     for i in mycursor.fetchall():
-        resp = GetInternItem(**{
-            k: v for k, v in zip( GetInternItem.model_fields.keys(), i )
+        resp = InternInfo(**{
+            k: v for k, v in zip( InternInfo.model_fields.keys(), i )
         })
         result.append(resp)
     mycursor.close()
