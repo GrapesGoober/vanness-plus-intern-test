@@ -10,5 +10,10 @@ export default defineConfig({
         host: true, // needed for the DC port mapping to work
         strictPort: true,
         port: 5173,
+        proxy: {
+			'/api/': {
+				target: 'http://fastapi-app:8000'
+			}
+		}
     }
 });
