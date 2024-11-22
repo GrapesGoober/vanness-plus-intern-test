@@ -9,6 +9,6 @@ export default defineConfig({
         },
         host: true, // needed for the DC port mapping to work
         strictPort: true,
-        port: 8080,
+        port: 5173,
     }
 });
