@@ -2,6 +2,9 @@
     import AddIntern from "./add_intern.svelte";
 
 </script>
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
-<AddIntern></AddIntern>
+
+<div>
+    <h1>Welcome to Intern Tracking App</h1>
+    <p>This app is made by Nachat K, as intern trial for Vanness Plus Consulting Co., Ltd</p>
+    <AddIntern></AddIntern>
+</div>
