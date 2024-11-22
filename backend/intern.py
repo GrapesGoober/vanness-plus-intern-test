@@ -43,7 +43,6 @@ class InternsFilter(BaseModel):
     applied_after:  date = date(2024, 1, 1)
     applied_before: date = date(2024, 12, 1)
     status:         Optional[InternStatus] = None
-    ...
 
 def connect_to_db() -> mysql.connector.MySQLConnection:
     """
