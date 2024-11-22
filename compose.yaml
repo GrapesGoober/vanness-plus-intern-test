@@ -18,6 +18,7 @@ services:
       - ./frontend/vite.config.js:/app/vite.config.js
       - ./frontend/tsconfig.json:/app/tsconfig.json
       - ./frontend/svelte.config.js:/app/svelte.config.js
+      - ./frontend/.svelte-kit:/app/.svelte-kit
     ports:
       - "5173:5173"  # Map container port 5173 (default Vite port)
     depends_on:
