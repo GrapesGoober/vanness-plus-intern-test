@@ -3,13 +3,8 @@
     import type { InternFilter, InternInfoWithId,  } from "$lib";
     import { onMount } from "svelte";
 
-    let interns: Array<InternInfoWithId> = [];
-    let filter: InternFilter = {
-        name_contains: "",
-        applied_after: "2020-01-01",
-        applied_before: "2026-01-01",
-        status: InternStatus.HIRE
-    };
+    let interns: Array<InternInfoWithId> = $state([]);
+    let {filter = $bindable()}: {filter: InternFilter} = $props();
 
     async function UpdateInternsArray() {
         interns = await API.GetInterns(filter);
