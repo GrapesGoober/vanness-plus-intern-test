@@ -60,8 +60,12 @@
         {internInfo.status}
     </div>
     {internInfo.name} <br>
-    {internInfo.applied_date}
-    {internInfo.role}
+    <div class="child">
+        {internInfo.role}
+    </div>
+    <div class="child">
+        Applied On {internInfo.applied_date}
+    </div>
     <button class="material-symbols-outlined icon" onclick={StartEdit}>
         edit_square
     </button>
@@ -95,6 +99,14 @@
         margin: 1em;
         border: #eee solid 1px;
     }
+    div.child {
+        display: inline-block;
+        background-color: #ccc;
+        padding: 5px 10px;
+        margin: 5px;
+        border-radius: 0.5em;
+        color: #555;
+    }
     div.parent:hover {
         border: #aaa solid 1px;
     }
@@ -119,5 +131,6 @@
         top: -0.1em;
         opacity: 1;
     }
+
 </style>
     
