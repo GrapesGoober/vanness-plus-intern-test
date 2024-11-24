@@ -1,10 +1,15 @@
 <script lang="ts">
-    import { API, InternStatus } from "$lib";
+    import { API } from "$lib";
     import type { InternFilter, InternInfoWithId,  } from "$lib";
     import { onMount } from "svelte";
 
-    let interns: Array<InternInfoWithId> = $state([]);
-    let {filter = $bindable()}: {filter: InternFilter} = $props();
+    let {
+        filter = $bindable(),
+        interns = $bindable(),
+    }: {
+        filter: InternFilter,
+        interns: Array<InternInfoWithId>,
+    } = $props();
 
     async function UpdateInternsArray() {
         interns = await API.GetInterns(filter);
