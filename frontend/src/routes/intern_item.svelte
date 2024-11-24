@@ -45,8 +45,9 @@
     }
     
 </script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
-<button class="parent" onfocusin={StartFocus} onfocusout={CancelFocus}>
+<div class="parent" onfocusin={StartFocus} onfocusout={CancelFocus}>
 {#if !isEditing}
     <div class="status-icon" 
     style="background-color: {InternStatusColors[internInfo.status]};">
@@ -55,7 +56,9 @@
     {internInfo.name} <br>
     {internInfo.applied_date}
     {internInfo.role}
-    <input type="button" value="Edit" onclick={StartEdit}>
+    <button class="material-symbols-outlined icon" onclick={StartEdit}>
+        edit_square
+    </button>
 {:else}
     <select bind:value={internEditInfo.status}>
         {#each Object.values(InternStatus) as status}
@@ -68,10 +71,10 @@
     <input type="button" value="Confirm" onclick={ConfirmEdit}>
     <input type="button" value="Cancel" onclick={CancelEdit}>
 {/if}
-</button>  
+</div>  
 
 <style>
-    button.parent {
+    div.parent {
         text-align: left;
         width: 30em;
         background-color: #eee;
@@ -82,7 +85,7 @@
         margin: 1em;
         border: #eee solid 1px;
     }
-    button.parent:hover {
+    div.parent:hover {
         border: #aaa solid 1px;
     }
     div.status-icon {
@@ -90,6 +93,21 @@
         color: white;
         padding: 0.2em 0.4em;
         border-radius: 0.3em;
+    }
+    button.icon {
+        border: none;
+        background-color: transparent;
+        float: right;
+        opacity: 0.2;
+    }
+    button.icon:hover {
+        border: none;
+        background-color: transparent;
+        float: right;
+        position: relative;
+        right: 0.1em;
+        top: -0.1em;
+        opacity: 1;
     }
 </style>
     
