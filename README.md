@@ -1,5 +1,5 @@
 # Vanness Plus Intern Test
-### Nachat K
+### Author: Nachat K
 A repository for my Vanness Plus internship application, to implement a intern tracking webapp.
 
 ## Requirements
