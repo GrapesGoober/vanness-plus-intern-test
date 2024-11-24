@@ -43,6 +43,12 @@
         internEditInfo = {...internInfo};
         isEditing = false;
     }
+
+    function StartDelete() {
+        if (confirm(`Are you sure to remove ${internInfo.name}`)) {
+            API.DeleteIntern(internInfo.id);
+        }
+    }
     
 </script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
@@ -58,6 +64,10 @@
     {internInfo.role}
     <button class="material-symbols-outlined icon" onclick={StartEdit}>
         edit_square
+    </button>
+
+    <button class="material-symbols-outlined icon" onclick={StartDelete}>
+        delete
     </button>
 {:else}
     <select bind:value={internEditInfo.status}>

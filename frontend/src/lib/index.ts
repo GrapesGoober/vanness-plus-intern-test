@@ -84,4 +84,16 @@ export namespace API {
 
         return response.ok;
     }
+
+    export async function DeleteIntern(id: number): Promise<boolean> {
+
+        const response = await fetch(`/api/intern?id=${id}`, {
+            method: 'DELETE',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+        });
+
+        return response.ok;
+    }
 }
