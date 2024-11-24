@@ -3,7 +3,7 @@
 # intern.py contains business logic for managing intern list
 
 from enum import Enum
-from typing import Optional
+from typing import Optional, Union
 import mysql.connector
 from pydantic import BaseModel
 from datetime import date
@@ -42,7 +42,7 @@ class InternsFilter(BaseModel):
     name_contains:  str = ""
     applied_after:  date = date(2024, 1, 1)
     applied_before: date = date(2024, 12, 1)
-    status:         Optional[InternStatus] = None
+    status:         Union[InternStatus, str] = ""
 
 def connect_to_db() -> mysql.connector.MySQLConnection:
     """
@@ -131,9 +131,10 @@ def get_intern(filter: InternsFilter) -> list[InternInfoWithId]:
             AND
             `applied_date` <= %(applied_before)s 
             AND
-            `applied_date` >= %(applied_after)s;
+            `applied_date` >= %(applied_after)s
+            AND
+            `status` LIKE CONCAT('%', %(status)s);
     """, filter.model_dump())
-    # `status` = %(status)s
 
     result: list[InternInfoWithId] = []
     for i in mycursor.fetchall():

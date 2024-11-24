@@ -24,7 +24,7 @@ export type InternFilter = {
     name_contains:  string;
     applied_after:  string;  // format yyyy-mm-dd
     applied_before: string;  // format yyyy-mm-dd
-    status:         InternStatus;
+    status?:        InternStatus; // empty means no status filter
 }
 
 export function GetDefaultInternFilter(): InternFilter {
@@ -37,8 +37,7 @@ export function GetDefaultInternFilter(): InternFilter {
     let filter: InternFilter = {
         name_contains: "",
         applied_after: appliedBeforeDefault,
-        applied_before: dateNow, 
-        status: InternStatus.HIRE
+        applied_before: dateNow
     };
 
     return filter;
