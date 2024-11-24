@@ -42,4 +42,17 @@ export namespace API {
         // Cast them to InternInfoWithId
         return <Array<InternInfoWithId>> (await response.json());
     }
+
+    export async function AddIntern(intern: InternInfo): Promise<boolean> {
+
+        const response = await fetch('/api/intern', {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(intern)
+        });
+
+        return response.ok;
+    }
 }

@@ -3,6 +3,7 @@
     import InternList from "./intern_list.svelte";
     import type { InternFilter } from "$lib"; 
     import { InternStatus } from "$lib"; 
+    import InternAddInput from "./intern_add_input.svelte";
 
     let appliedBeforeDefault: string = "2020-01-01";
     let dateNow: string = 
@@ -23,4 +24,5 @@
     <p>This app is made by Nachat K, as intern trial for Vanness Plus Consulting Co., Ltd</p>
     <InternFilterInput bind:filter={filter}></InternFilterInput>
     <InternList bind:filter={filter}></InternList>
+    <InternAddInput></InternAddInput>
 </div>
