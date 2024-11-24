@@ -18,7 +18,7 @@
     
     onMount(() => {
         UpdateInternsArray();
-        setInterval(UpdateInternsArray, 5000);
+        setInterval(UpdateInternsArray, 1000);
     });
     
 </script>
