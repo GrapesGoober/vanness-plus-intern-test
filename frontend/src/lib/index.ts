@@ -27,6 +27,23 @@ export type InternFilter = {
     status:         InternStatus;
 }
 
+export function GetDefaultInternFilter(): InternFilter {
+    let appliedBeforeDefault: string = "2020-01-01";
+    let dateNow: string = 
+        (new Date(Date.now()))
+            .toISOString()
+            .split('T')[0];
+
+    let filter: InternFilter = {
+        name_contains: "",
+        applied_after: appliedBeforeDefault,
+        applied_before: dateNow, 
+        status: InternStatus.HIRE
+    };
+
+    return filter;
+}
+
 export namespace API {
     export async function GetInterns (filter: InternFilter): Promise<Array<InternInfoWithId>> {
         // Fetch the list of interns

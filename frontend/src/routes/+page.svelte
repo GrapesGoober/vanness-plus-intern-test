@@ -2,21 +2,10 @@
     import InternFilterInput from "./intern_filter_input.svelte";
     import InternList from "./intern_list.svelte";
     import type { InternFilter } from "$lib"; 
-    import { InternStatus } from "$lib"; 
+    import { GetDefaultInternFilter } from "$lib"; 
     import InternAddInput from "./intern_add_input.svelte";
 
-    let appliedBeforeDefault: string = "2020-01-01";
-    let dateNow: string = 
-        (new Date(Date.now()))
-            .toISOString()
-            .split('T')[0];
-
-    let filter: InternFilter = $state({
-        name_contains: "",
-        applied_after: appliedBeforeDefault,
-        applied_before: dateNow, 
-        status: InternStatus.HIRE
-    });
+    let filter: InternFilter = $state(GetDefaultInternFilter());
 </script>
 
 <div>
