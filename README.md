@@ -13,6 +13,7 @@ The minimum requirements are as follows.
 
 ## Running The Webapp
   1. Start the Docker engine.
-  2. Run `docker compose up`
-    - This sets up 2 containers: `mysql` for port 3306 and `my-fastapi-app` for port 8000
-    - You can visit FastAPI's auto docs via `localhost:8000/docs`
+  2. Run `docker compose up`. This sets up 3 containers: 
+    - `mysql` for port 3306 
+    - `fastapi-app` for port 8000. You can visit FastAPI's auto docs via `http://localhost:8000/docs`
+    - `svelte-app` for port 5173. Connect to frontend UI via `http://localhost:5173`
