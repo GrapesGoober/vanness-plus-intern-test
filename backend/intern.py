@@ -77,7 +77,6 @@ def edit_intern(body: InternInfoWithId) -> bool:
     """
     Edits existing intern based on ID. Doesn't check whether intern exists.
     Returns `True` if success, regardless whether intern exists.
-    Returns `False` if ID field not specified.
     """
     if body.id == None:
         return False
