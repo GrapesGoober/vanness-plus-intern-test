@@ -13,8 +13,8 @@
     <h1>Welcome to Intern Tracking App</h1>
     <p>This app is made by Nachat K, as intern trial for Vanness Plus Consulting Co., Ltd</p>
     <InternFilterInput bind:filter={filter}></InternFilterInput>
-    <InternList bind:interns={interns} bind:filter={filter}></InternList>
     <InternAddInput></InternAddInput>
+    <InternList bind:interns={interns} bind:filter={filter}></InternList>
 </div>
 
 <style>
