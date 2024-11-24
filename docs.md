@@ -1,6 +1,6 @@
 # Vanness Plus Intern Test - Documentation
 ### Author: Nachat K
-This is documentation for the application used in Vanness Plus Intern test. This docs is intended to be as brief as possible, as it is not strictly required. This file has 4 parts:
+This is documentation for the application used in Vanness Plus Intern test. This docs is intended to be as brief as possible, as it is not strictly required. I recommend you check out the repo `https://github.com/GrapesGoober/vanness-plus-intern-test` for more detailed issues, or if you wish to clone it. This file has 4 parts:
 - **_Containers:_** Goes over the 3 containers and how they work
 - **_API & Backend:_** Goes over the design of the REST API, for all the interns CRUD operations
 - **_Frontend:_** Goes over the implementations & user guide for frontend.
