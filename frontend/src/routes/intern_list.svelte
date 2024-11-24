@@ -2,6 +2,7 @@
     import { API } from "$lib";
     import type { InternFilter, InternInfoWithId,  } from "$lib";
     import { onMount } from "svelte";
+    import InternItem from "./intern_item.svelte";
 
     let {
         filter = $bindable(),
@@ -22,11 +23,6 @@
     
 </script>
 
-{#each interns as i}
-<div>
-    {i.status}
-    {i.name}
-    {i.applied_date}
-    {i.role}
-</div>    
+{#each interns as _, index }
+    <InternItem bind:internInfo={interns[index]}></InternItem>
 {/each}

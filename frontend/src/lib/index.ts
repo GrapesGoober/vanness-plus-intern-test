@@ -72,4 +72,17 @@ export namespace API {
 
         return response.ok;
     }
+
+    export async function EditIntern(intern: InternInfoWithId): Promise<boolean> {
+
+        const response = await fetch('/api/intern', {
+            method: 'PUT',
+            headers: {
+            'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(intern)
+        });
+
+        return response.ok;
+    }
 }
