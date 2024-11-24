@@ -28,7 +28,8 @@
         <label for="applied_before">Applied Before</label>
         <input name="applied_before" type="date" bind:value={filter.applied_before}> <br>
 
-        <select bind:value={filter.status}>
+        <label for="status">Status</label>
+        <select name="status" bind:value={filter.status}>
             <option value="">All</option>
             {#each Object.values(InternStatus) as status}
                 <option value={status}>{status}</option>
