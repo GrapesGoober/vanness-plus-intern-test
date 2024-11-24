@@ -2,9 +2,6 @@
     import { InternStatus } from "$lib";
     import type { InternFilter } from "$lib";
 
-    // There's a warning for binding to non-reactive property
-    // I guess that since 'filter' is an object, it wont bind is properties
-    // if there's UI elements using this filter object, it wont react properly
     let {filter = $bindable()}: {filter: InternFilter} = $props();
 
 </script>

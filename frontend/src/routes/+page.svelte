@@ -11,12 +11,12 @@
             .toISOString()
             .split('T')[0];
 
-    let filter: InternFilter = {
+    let filter: InternFilter = $state({
         name_contains: "",
         applied_after: appliedBeforeDefault,
         applied_before: dateNow, 
         status: InternStatus.HIRE
-    };
+    });
 </script>
 
 <div>
