@@ -1,6 +1,6 @@
 <script lang="ts">
     import { API, InternStatus } from "$lib";
-    import type { InternInfoWithId,  } from "$lib";
+    import type { InternInfoWithId } from "$lib";
 
     let {
         internInfo = $bindable(),
@@ -8,8 +8,26 @@
         internInfo: InternInfoWithId,
     } = $props();
 
+    const InternStatusColors = {
+        [InternStatus.NEW]: '#5ac475',
+        [InternStatus.WIP]: '#edbc28',
+        [InternStatus.WAIT]: '#eabbf2',
+        [InternStatus.PASS]: '#6aa7ba',
+        [InternStatus.FAIL]: '#b8b8b8',
+        [InternStatus.HIRE]: '#ed6ded'
+    };
+
+    let isFocused: boolean = $state(false);
     let isEditing: boolean = $state(false);
     let internEditInfo: InternInfoWithId = $state({...internInfo});
+
+    function StartFocus() {
+        isFocused = true;
+    }
+
+    function CancelFocus() {
+        isFocused = false;
+    }
 
     function StartEdit() {
         isEditing = true;
@@ -28,17 +46,17 @@
     
 </script>
 
+<button class="parent" onfocusin={StartFocus} onfocusout={CancelFocus}>
 {#if !isEditing}
-<div>
-    {internInfo.status}
-    {internInfo.name}
+    <div class="status-icon" 
+    style="background-color: {InternStatusColors[internInfo.status]};">
+        {internInfo.status}
+    </div>
+    {internInfo.name} <br>
     {internInfo.applied_date}
     {internInfo.role}
     <input type="button" value="Edit" onclick={StartEdit}>
-</div>    
-
 {:else}
-<div>
     <select bind:value={internEditInfo.status}>
         {#each Object.values(InternStatus) as status}
             <option value={status}>{status}</option>
@@ -49,6 +67,29 @@
     <input type="text" bind:value={internEditInfo.role}>
     <input type="button" value="Confirm" onclick={ConfirmEdit}>
     <input type="button" value="Cancel" onclick={CancelEdit}>
-</div>  
 {/if}
+</button>  
+
+<style>
+    button.parent {
+        text-align: left;
+        width: 30em;
+        background-color: #eee;
+        color: black;
+        padding: 16px;
+        border-radius: 0.5em;
+        display: block;
+        margin: 1em;
+        border: #eee solid 1px;
+    }
+    button.parent:hover {
+        border: #aaa solid 1px;
+    }
+    div.status-icon {
+        display: inline-block;
+        color: white;
+        padding: 0.2em 0.4em;
+        border-radius: 0.3em;
+    }
+</style>
     

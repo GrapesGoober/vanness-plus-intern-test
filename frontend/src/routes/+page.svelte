@@ -16,3 +16,9 @@
     <InternList bind:interns={interns} bind:filter={filter}></InternList>
     <InternAddInput></InternAddInput>
 </div>
+
+<style>
+    * {
+        font-family: 'Verdana', 'Trebuchet MS', 'Tahoma', 'Arial ';
+    }
+</style>
