@@ -129,9 +129,9 @@ def get_intern(filter: InternsFilter) -> list[InternInfoWithId]:
         WHERE
             `name` LIKE CONCAT('%', %(name_contains)s, '%')
             AND
-            `applied_date` < %(applied_before)s 
+            `applied_date` <= %(applied_before)s 
             AND
-            `applied_date` > %(applied_after)s;
+            `applied_date` >= %(applied_after)s;
     """, filter.model_dump())
     # `status` = %(status)s
 
